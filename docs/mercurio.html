@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El perihelio de Mercurio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:20px}
+.bar{display:flex;height:44px;border-radius:10px;overflow:hidden;margin:10px 0 6px}
+.bar span{display:flex;align-items:center;padding:0 10px;font:600 14px Inter,system-ui,sans-serif;white-space:nowrap;color:var(--accent-ink)}
+.barkey{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:14px;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.facts div{background:var(--bg);border-radius:12px;padding:14px}
+.facts .num{font-size:clamp(22px,2.4vw,28px)}
+.facts small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+@media(max-width:860px){.split{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.facts{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html" aria-current="page">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>El perihelio de Mercurio avanza <span id="tasa">575</span>″ por siglo</h1>
+<p class="lead">Con las posiciones y velocidades heliocéntricas de Mercurio, cada 12 horas entre 1900 y 2100, se calcula en cada instante la dirección del perihelio. Esa dirección no es fija: avanza de manera secular, órbita tras órbita.</p>
+
+<div class="main">
+<div>
+<div class="fig" id="fig1"><svg id="perih" role="img" aria-label="Ángulo del perihelio de Mercurio de 1900 a 2100"></svg></div>
+<div class="legend"><span><i style="background:var(--sun);height:6px;width:6px;border-radius:3px"></i>Longitud del perihelio, promedio por órbita (una de cada cuatro)</span><span><i style="background:var(--steel)"></i>Ajuste lineal</span></div>
+</div>
+<div class="side">
+<div class="card">
+<h2>Composición de los <span id="tasa2">575</span>″ por siglo</h2>
+<div class="bar" id="bar"></div>
+<div class="barkey"><span>Perturbaciones planetarias (newtonianas)</span><span>Relatividad general</span></div>
+<p class="key">La contribución planetaria se obtiene como diferencia entre el avance total medido y los 42.98″ por siglo de la relatividad general.</p>
+<div class="facts">
+<div><span class="num" id="norb">830</span><small>órbitas en los datos</small></div>
+<div><span class="num">0.10″</span><small>avance relativista por órbita</small></div>
+<div><span class="num">42.98″</span><small>por siglo, no explicados por la mecánica newtoniana</small></div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>Visualización de la precesión relativista</h2>
+<p class="lead">El avance relativista es de una décima de segundo de arco por órbita, imperceptible a simple vista. La figura multiplica el efecto por un factor ajustable para hacer visible la roseta.</p>
+<div class="split">
+<div class="fig" style="background:var(--bg)"><svg id="ros" role="img" aria-label="Órbita de Mercurio con la precesión exagerada"></svg></div>
+<div>
+<div class="ctl"><label for="mult">Factor de amplificación <output id="multO"></output></label><input id="mult" type="range" min="0" max="5" step="0.05" value="5"><small>Escala logarítmica: de ×1 (valor real) a ×100 000.</small></div>
+<div class="presets"><button data-m="0">Valor real (×1)</button><button data-m="3">×1 000</button><button data-m="5">×100 000</button></div>
+<p class="status ok" id="rosS"></p>
+<div class="reto"><b>Observación.</b> Con el avance total de 575″ por siglo, el perihelio completa una vuelta en unos 225 000 años; con la contribución relativista sola tardaría unos tres millones de años. Aun así, la discrepancia era detectable con las observaciones del siglo XIX.</div>
+</div>
+</div>
+</div></section>
+
+<section class="band"><div class="wrap">
+<h2>Medición y contexto</h2>
+<div class="main" style="margin-top:0">
+<div class="prose">
+<p><b>Cómo se mide.</b> La dirección del perihelio está dada por el vector de Laplace–Runge–Lenz, constante de movimiento del problema de dos cuerpos:</p>
+$$\mathbf A = \frac{\mathbf v \times \mathbf h}{\mu} - \frac{\mathbf r}{r},\qquad \mathbf h = \mathbf r \times \mathbf v,\qquad \mu = G\,(M_\odot + M_{\mathrm{Me}}).$$
+<p>Su magnitud es la excentricidad y su dirección apunta al perihelio. Las perturbaciones hacen que \(\mathbf A\) gire lentamente; su ángulo, medido en un plano fijo respecto a las estrellas lejanas y promediado sobre cada órbita, crece linealmente con pendiente de 575″ por siglo.</p>
+<p><b>La predicción relativista.</b> Para una órbita de semieje mayor \(a\) y excentricidad \(e\), la relatividad general añade un avance por órbita</p>
+$$\Delta\varpi = \frac{6\pi\, G M_\odot}{c^2\, a\,(1-e^2)} \approx 0.1035'' ,$$
+<p>que, multiplicado por las 415 órbitas de un siglo, da 42.98″.</p>
+</div>
+<div class="prose">
+<p><b>1859.</b> Urbain Le Verrier calculó el efecto de los planetas conocidos sobre Mercurio con la mecánica newtoniana y encontró un exceso de unos 40″ por siglo en el avance del perihelio. Propuso un planeta interior, Vulcano, que nunca fue observado.</p>
+<p><b>1915.</b> Einstein mostró que la relatividad general predice el exceso sin cuerpos adicionales. Fue la primera confirmación de la teoría.</p>
+<p><b>En el siguiente experimento</b> se entregan estos mismos datos a SINDy, junto con una biblioteca que incluye el término relativista y términos espurios, para comprobar si el algoritmo selecciona la física correcta.</p>
+</div>
+</div>
+<div class="next"><a class="btn" href="newton.html">← Ley de gravitación</a><a class="btn" href="einstein.html">Siguiente: el término relativista →</a></div>
+</div></section>
+
+<footer class="band"><div class="wrap">Experimento 3 de «Redescubriendo a Einstein». Datos: JPL Horizons (efemérides DE441), vectores baricéntricos ICRF de Mercurio y del Sol, 1900–2100, cada 12 horas. El valor de 42.98″ por siglo proviene de la integración del modelo identificado en la tesis.</div></footer>
+
+<script>
+{
+const $ = id => document.getElementById(id);
+const GR = 42.98;
+let P = null;
+function drawPerih() {
+  const s = $('perih'), W = s.clientWidth, H = s.clientHeight; if (!W || !H || !P) return;
+  const narrow = W < 520, L = narrow ? 52 : 62, R = 16, T = 18, B = 34;
+  const x0 = 1900, x1 = 2100, ymax = Math.ceil(Math.max(...P.angulo_arcsec)/200)*200;
+  const X = t => L + (t - x0)/(x1 - x0)*(W - L - R), Y = v => T + (1 - v/ymax)*(H - T - B);
+  let g = '';
+  for (let v = 0; v <= ymax; v += 200) g += `<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${v}″</text>`;
+  (narrow ? [1900, 2000, 2100] : [1900, 1950, 2000, 2050, 2100]).forEach(t => g += `<text x="${X(t)}" y="${H-10}" text-anchor="middle">${t}</text>`);
+  let d = ''; P.anos.forEach((t, i) => d += `<circle cx="${X(t).toFixed(1)}" cy="${Y(P.angulo_arcsec[i]).toFixed(1)}" r="2.2" fill="var(--sun)"/>`);
+  const t0 = P.anos[0], tl = P.anos[P.anos.length - 1], rate = P.tasa/100;
+  g += d + `<line x1="${X(t0)}" y1="${Y(0)}" x2="${X(tl)}" y2="${Y(rate*(tl - t0))}" stroke="var(--steel)" stroke-width="2"/>`;
+  g += `<text x="${X(2000)}" y="${Y(rate*(2000 - t0)) - 14}" text-anchor="end" style="fill:var(--ink)">${P.tasa.toFixed(1)}″ por siglo</text>`;
+  s.innerHTML = g;
+}
+function fillBar() {
+  const pl = P.tasa - GR, tot = P.tasa;
+  $('bar').innerHTML = `<span style="background:var(--muted);width:${pl/tot*100}%">${pl.toFixed(1)}″</span><span style="background:var(--steel);width:${GR/tot*100}%;justify-content:center;min-width:64px">${GR}″</span>`;
+}
+// roseta
+const rs = $('ros'); let mult = 1, tStart = null, orbits = 0;
+const E = 0.2056, PER_ORB = GR/415.2;  // segundos de arco por órbita (415.2 órbitas por siglo)
+function rosetteFrame(phase) {
+  const W = rs.clientWidth, H = rs.clientHeight; if (!W || !H) return;
+  const sc = Math.min(W, H)/2.6/1, cx = W/2 + sc*0.0, cy = H/2;
+  const dw = PER_ORB*mult/3600*Math.PI/180;    // radianes por órbita
+  const nShow = 40, cur = Math.floor(phase), frac = phase - cur;
+  let paths = '';
+  for (let k = Math.max(0, cur - nShow); k <= cur; k++) {
+    const w = k*dw, op = 0.08 + 0.6*(1 - (cur - k)/nShow);
+    let d = '';
+    for (let j = 0; j <= 120; j++) {
+      const E_ = 2*Math.PI*j/120, xo = Math.cos(E_) - E, yo = Math.sqrt(1 - E*E)*Math.sin(E_);
+      const x = xo*Math.cos(w) - yo*Math.sin(w), y = xo*Math.sin(w) + yo*Math.cos(w);
+      d += (j ? 'L' : 'M') + (cx + sc*x).toFixed(1) + ' ' + (cy - sc*y).toFixed(1);
+    }
+    paths += `<path d="${d}" fill="none" stroke="var(--steel)" stroke-width="${k === cur ? 2 : 1}" opacity="${k === cur ? 1 : op.toFixed(2)}"/>`;
+  }
+  const w = cur*dw, M_ = 2*Math.PI*frac; let Ea = M_; for (let i = 0; i < 6; i++) Ea = M_ + E*Math.sin(Ea);
+  const xo = Math.cos(Ea) - E, yo = Math.sqrt(1 - E*E)*Math.sin(Ea), px = xo*Math.cos(w) - yo*Math.sin(w), py = xo*Math.sin(w) + yo*Math.cos(w);
+  rs.innerHTML = `${paths}<circle cx="${cx}" cy="${cy}" r="10" fill="var(--sun)"/><circle cx="${(cx + sc*px).toFixed(1)}" cy="${(cy - sc*py).toFixed(1)}" r="6" fill="var(--ink)"/>`;
+  $('rosS').textContent = `Órbita ${cur + 1}. Con amplificación ×${fmtMult(mult)}, el perihelio avanza ${fmtAng(PER_ORB*mult)} por órbita.`;
+}
+const fmtAng = a => a >= 3600 ? (a/3600).toFixed(1) + '°' : a >= 60 ? (a/60).toFixed(1) + '′' : a.toFixed(2) + '″';
+const fmtMult = m => m >= 1000 ? Math.round(m).toLocaleString('es-MX').replace(/,/g, ' ') : (m >= 10 ? Math.round(m) : m.toFixed(1));
+function setMult() { mult = Math.pow(10, +$('mult').value); $('multO').textContent = '×' + fmtMult(mult); }
+$('mult').addEventListener('input', setMult);
+document.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => { $('mult').value = b.dataset.m; setMult(); }));
+setMult();
+const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let phase = 25.3;
+if (!still) { const loop = ts => { if (tStart === null) tStart = ts; phase = (ts - tStart)/700; rosetteFrame(phase); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+else rosetteFrame(phase);
+const ro1 = new ResizeObserver(drawPerih); ro1.observe($('perih'));
+const ro2 = new ResizeObserver(() => rosetteFrame(phase)); ro2.observe(rs);
+fetch('datos_mercurio.json').then(r => r.json()).then(d => {
+  P = d.perihelio; $('tasa').textContent = P.tasa.toFixed(0); $('tasa2').textContent = P.tasa.toFixed(0);
+  fillBar(); drawPerih();
+}).catch(() => { $('perih').innerHTML = '<text x="20" y="40">No se pudieron cargar los datos.</text>'; });
+}
+</script>
+</body>
+</html>

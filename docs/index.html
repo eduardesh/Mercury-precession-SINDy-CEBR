@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redescubriendo a Einstein</title>
+<meta name="description" content="Identificación dispersa de ecuaciones (SINDy) aplicada al perihelio de Mercurio: cinco experimentos interactivos y fundamentos teóricos, en español.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:center}
+.hero h1{font-size:clamp(36px,6vw,60px)}
+.hero .lead{font-size:18px;margin-top:12px}
+.sky{position:relative;aspect-ratio:1/1;max-height:520px;width:100%;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--sun) 18%,var(--panel)) 0,var(--panel) 55%);border-radius:18px}
+.sky svg{position:absolute;inset:0;width:100%;height:100%}
+.cap{font-size:13px;color:var(--muted);margin-top:8px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.cta .btn.main{background:var(--steel);border-color:var(--steel);color:var(--accent-ink)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
+.cards a{display:block;background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:18px;color:var(--ink);text-decoration:none;min-height:150px}
+.cards a:hover{border-color:var(--steel)}
+.cards b{display:block;font:700 19px/1.2 'Space Grotesk',system-ui,sans-serif;margin:6px 0}
+.cards small{color:var(--muted);font-size:13px}
+.cards p{margin:0;color:var(--muted);font-size:15px}
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}
+.about p{margin:0 0 10px;color:var(--muted)}
+@media(max-width:860px){.hero,.about{grid-template-columns:minmax(0,1fr)}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cards{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap hero">
+<div>
+<h1>¿Puede un algoritmo redescubrir la relatividad general?</h1>
+<p class="lead">El perihelio de Mercurio avanza 43 segundos de arco por siglo más de lo que predice la mecánica newtoniana; la relatividad general explicó la diferencia en 1915. En este sitio se aplica un método de identificación dispersa de ecuaciones, SINDy, a 200 años de datos de Mercurio, sin información previa sobre la física involucrada.</p>
+<div class="cta"><a class="btn main" href="resorte.html">Comenzar por el primer experimento</a><a class="btn" href="teoria.html">Fundamentos teóricos</a></div>
+</div>
+<div>
+<div class="sky"><svg id="sky" role="img" aria-label="Órbita de Mercurio con su giro exagerado"></svg></div>
+<p class="cap">Órbita de Mercurio con la precesión relativista amplificada por un factor de 100 000.</p>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>Cinco experimentos, del oscilador armónico a la relatividad general</h2>
+<div class="cards">
+<a href="resorte.html"><small>Experimento 1 · 10 min</small><b>Oscilador armónico amortiguado</b><p>Identificación de un sistema lineal de dos ecuaciones y papel del umbral en STLSQ.</p></a>
+<a href="newton.html"><small>Experimento 2 · 10 min</small><b>Ley de gravitación</b><p>Selección entre fuerzas centrales \(r^{-1}, r^{-2}, r^{-3}\) a partir de una órbita simulada.</p></a>
+<a href="mercurio.html"><small>Experimento 3 · 10 min</small><b>El perihelio de Mercurio</b><p>Avance de 575″ por siglo medido con el vector de Laplace–Runge–Lenz en datos de JPL.</p></a>
+<a href="einstein.html"><small>Experimento 4 · 15 min</small><b>El término relativista</b><p>Biblioteca de 13 términos, tres espurios: SINDy selecciona la corrección posnewtoniana con \(f = 0.99998\).</p></a>
+<a href="rompe.html"><small>Experimento 5 · 10 min</small><b>Sensibilidad al ruido y a la cadencia</b><p>Límites impuestos por la diferenciación numérica: ruido de posición e intervalo de muestreo.</p></a>
+<a href="teoria.html"><small>Lecturas · 25 min</small><b>Fundamentos teóricos</b><p>Ecuación de Binet, corrección de Schwarzschild, formulación de SINDy y criterios de validación.</p></a>
+</div>
+</div></section>
+
+<section class="band"><div class="wrap about">
+<div>
+<h2>Origen del proyecto</h2>
+<p>Este sitio presenta, en forma de divulgación, la tesis de licenciatura en Ingeniería Física de Cristopher Eduardo Barrón Ramos (Facultad de Ciencias Físico Matemáticas, Universidad Autónoma de Coahuila): <i>Redescubrimiento de la precesión relativista del perihelio de Mercurio con Machine Learning: identificación dispersa de dinámica no lineal (SINDy)</i>.</p>
+<p>Todos los cálculos se ejecutan en el navegador, sin instalación ni registro. Los experimentos 3, 4 y 5 emplean datos de JPL Horizons (NASA), 1900–2100, cada 12 horas.</p>
+</div>
+<div>
+<h2>Código y reproducibilidad</h2>
+<p>El repositorio contiene el código en Python que descarga los datos de JPL Horizons y reproduce los resultados de la tesis. Puede reutilizarse y adaptarse con fines docentes o de investigación, citando la tesis.</p>
+<p><a class="btn" href="https://github.com/eduardesh/Mercury-precession-SINDy-CEBR">Ver el repositorio en GitHub</a></p>
+</div>
+</div></section>
+
+<footer class="band"><div class="wrap">«Redescubriendo a Einstein» · Divulgación en español sobre identificación de ecuaciones a partir de datos.</div></footer>
+
+<script>
+{
+const s = document.getElementById('sky'), E = 0.2056, DW = 42.98/415.2*1e5/3600*Math.PI/180;
+let t0 = null, phase = 18.4;
+function frame(p) {
+  const W = s.clientWidth, H = s.clientHeight; if (!W || !H) return;
+  const sc = Math.min(W, H)/2.7, cx = W/2, cy = H/2, cur = Math.floor(p), frac = p - cur, n = 36;
+  let g = '';
+  for (let k = Math.max(0, cur - n); k <= cur; k++) {
+    const w = k*DW; let d = '';
+    for (let j = 0; j <= 100; j++) { const E_ = 2*Math.PI*j/100, xo = Math.cos(E_) - E, yo = Math.sqrt(1 - E*E)*Math.sin(E_); d += (j ? 'L' : 'M') + (cx + sc*(xo*Math.cos(w) - yo*Math.sin(w))).toFixed(1) + ' ' + (cy - sc*(xo*Math.sin(w) + yo*Math.cos(w))).toFixed(1); }
+    g += `<path d="${d}" fill="none" stroke="var(--steel)" stroke-width="${k === cur ? 2.2 : 1}" opacity="${k === cur ? 1 : (0.06 + 0.5*(1 - (cur - k)/n)).toFixed(2)}"/>`;
+  }
+  const w = cur*DW, M = 2*Math.PI*frac; let Ea = M; for (let i = 0; i < 6; i++) Ea = M + E*Math.sin(Ea);
+  const xo = Math.cos(Ea) - E, yo = Math.sqrt(1 - E*E)*Math.sin(Ea);
+  s.innerHTML = g + `<circle cx="${cx}" cy="${cy}" r="${Math.max(10, sc*0.09)}" fill="var(--sun)"/><circle cx="${(cx + sc*(xo*Math.cos(w) - yo*Math.sin(w))).toFixed(1)}" cy="${(cy - sc*(xo*Math.sin(w) + yo*Math.cos(w))).toFixed(1)}" r="6" fill="var(--ink)"/>`;
+}
+const ro = new ResizeObserver(() => frame(phase)); ro.observe(s);
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const loop = ts => { if (t0 === null) t0 = ts; phase = 18.4 + (ts - t0)/800; frame(phase); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+else frame(phase);
+}
+</script>
+</body>
+</html>

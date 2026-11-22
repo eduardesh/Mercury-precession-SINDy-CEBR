@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oscilador amortiguado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html" aria-current="page">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>Oscilador armónico amortiguado</h1>
+<p class="lead">Se registran la posición y la velocidad de un oscilador con amortiguamiento viscoso. A partir únicamente de esas mediciones, SINDy debe identificar el sistema de ecuaciones diferenciales que gobierna su dinámica.</p>
+
+<div class="main">
+<div>
+<div class="fig" id="fig"><svg id="plot" aria-label="Oscilador animado, posiciones medidas y trayectoria del modelo identificado" role="img"></svg></div>
+<div class="legend"><span><i style="background:var(--dot);height:6px;width:6px;border-radius:3px"></i>Posición medida</span><span><i style="background:var(--steel)"></i>Trayectoria del modelo identificado</span></div>
+</div>
+
+<div class="side">
+<div class="card" aria-live="polite">
+<h2>Modelo identificado</h2>
+<div class="eqs" id="eqs"></div>
+<p class="status" id="status"></p>
+<p class="key">Azul: término presente en el sistema · rojo: término espurio · tachado: término del sistema que fue eliminado.</p>
+</div>
+
+<div class="card">
+<div class="ctl"><label for="lam">Umbral \(\lambda\) <output id="lamO"></output></label><input id="lam" type="range" min="0" max="2" step="0.01" value="0.1"><small>Se anulan los coeficientes con \(|\xi| < \lambda\).</small></div>
+<div class="ctl"><label for="noise">Ruido de medición <output id="noiseO"></output></label><input id="noise" type="range" min="0" max="10" step="0.1" value="1"><small>Desviación estándar del error, relativa a la amplitud inicial.</small></div>
+<div class="ctl"><label for="fric">Coeficiente de amortiguamiento \(c\) <output id="fricO"></output></label><input id="fric" type="range" min="0.1" max="1" step="0.05" value="0.4"><small>Modifica el sistema verdadero.</small></div>
+<div class="presets">
+<button data-p="0.1,1,0.4">Configuración de referencia</button>
+<button data-p="0,1,0.4">Umbral bajo</button>
+<button data-p="0.6,1,0.4">Umbral alto</button>
+<button data-p="0.1,8,0.4">Ruido elevado</button>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>Planteamiento</h2>
+<div class="main" style="margin-top:0">
+<div class="prose">
+<p>El sistema verdadero, que SINDy desconoce, es un oscilador lineal con amortiguamiento viscoso, escrito como sistema de primer orden:</p>
+$$\dot x = v,\qquad \dot v = -k\,x - c\,v,\qquad k = 4 .$$
+<p>Se integra con Runge–Kutta de cuarto orden desde \(x(0)=1,\ v(0)=0\), con paso \(\Delta t = 0.02\) durante \(15\) unidades de tiempo, y a cada muestra se le suma ruido gaussiano. Las derivadas \(\dot x,\ \dot v\) se estiman de los datos ruidosos con un ajuste local por mínimos cuadrados (filtro de Savitzky–Golay de nueve puntos).</p>
+<p>La biblioteca de candidatos contiene los monomios de grado a lo más tres en \((x,v)\):</p>
+$$\Theta(x,v) = \big[\,1,\ x,\ v,\ x^2,\ xv,\ v^2,\ x^3,\ x^2v,\ xv^2,\ v^3\,\big].$$
+<p>SINDy busca una matriz de coeficientes \(\Xi\) dispersa tal que \(\dot{\mathbf X} \approx \Theta(\mathbf X)\,\Xi\). El algoritmo de mínimos cuadrados con umbral secuencial (STLSQ) resuelve el problema por mínimos cuadrados, anula los coeficientes con \(|\xi_{jk}|<\lambda\) y vuelve a resolver sobre los términos restantes hasta que el conjunto activo deja de cambiar.</p>
+</div>
+<div class="prose">
+<p><b>Lectura del resultado.</b> Con la configuración de referencia el modelo identificado contiene exactamente los términos del sistema verdadero, con coeficientes que difieren de los reales en unos pocos por ciento. Si el umbral es demasiado bajo, el ruido en las derivadas se ajusta con términos no lineales espurios; si es demasiado alto, se eliminan términos presentes en el sistema.</p>
+<div class="reto" style="margin-top:12px"><b>Ejercicio.</b> Aumentar gradualmente el ruido e identificar el nivel a partir del cual aparece el primer término espurio. ¿Puede compensarse aumentando \(\lambda\)? Después, fijar \(c = 0.1\) con \(\lambda = 0.10\) y explicar por qué desaparece el término de amortiguamiento.</div>
+</div>
+</div>
+<div class="next"><a class="btn" href="teoria.html">← Teoría</a><a class="btn" href="newton.html">Siguiente: ley de gravitación →</a></div>
+</div></section>
+
+<footer class="band"><div class="wrap">Experimento 1 de «Redescubriendo a Einstein». Datos simulados: oscilador con \(k = 4\) y el coeficiente de amortiguamiento seleccionado.</div></footer>
+
+<script>
+{
+// ---------- núcleo: simulación y SINDy (CORE-START)
+const K = 4, DT = 0.02, N = 751, M = 4;
+const NAMES = ['1','x','v','x²','x·v','v²','x³','x²·v','x·v²','v³'];
+const lib = (x, v) => [1, x, v, x*x, x*v, v*v, x*x*x, x*x*v, x*v*v, v*v*v];
+function rk4(f, y0) {
+  const out = [y0.slice()]; let y = y0.slice();
+  for (let i = 1; i < N; i++) {
+    const k1 = f(y), k2 = f([y[0]+DT/2*k1[0], y[1]+DT/2*k1[1]]), k3 = f([y[0]+DT/2*k2[0], y[1]+DT/2*k2[1]]), k4 = f([y[0]+DT*k3[0], y[1]+DT*k3[1]]);
+    y = [y[0]+DT/6*(k1[0]+2*k2[0]+2*k3[0]+k4[0]), y[1]+DT/6*(k1[1]+2*k2[1]+2*k3[1]+k4[1])];
+    if (!isFinite(y[0]) || Math.abs(y[0]) > 50) { y = [NaN, NaN]; }
+    out.push(y);
+  }
+  return out;
+}
+function gauss(n) { let s = 12345; const r = () => (s = s * 16807 % 2147483647) / 2147483647; const g = []; for (let i = 0; i < n; i++) { const u = r() || 1e-12, w = r(); g.push(Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*w)); } return g; }
+const G = gauss(2*N);
+function solve(A, b) {
+  const n = b.length, a = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let r = c+1; r < n; r++) if (Math.abs(a[r][c]) > Math.abs(a[p][c])) p = r;
+    [a[c], a[p]] = [a[p], a[c]];
+    const d = a[c][c] || 1e-14;
+    for (let r = 0; r < n; r++) if (r !== c) { const f = a[r][c]/d; for (let k = c; k <= n; k++) a[r][k] -= f*a[c][k]; }
+  }
+  return a.map((r, i) => r[n]/(r[i] || 1e-14));
+}
+function lstsq(Th, y, idx) {
+  const A = idx.map(i => idx.map(j => { let s = 0; for (const r of Th) s += r[i]*r[j]; return s + (i === j ? 1e-10 : 0); }));
+  const b = idx.map(i => { let s = 0; for (let k = 0; k < Th.length; k++) s += Th[k][i]*y[k]; return s; });
+  return solve(A, b);
+}
+function stlsq(Th, y, lam) {
+  let idx = NAMES.map((_, i) => i), xi = new Array(NAMES.length).fill(0);
+  for (let it = 0; it < 12; it++) {
+    const c = idx.length ? lstsq(Th, y, idx) : [];
+    xi = new Array(NAMES.length).fill(0); idx.forEach((i, k) => xi[i] = c[k]);
+    const keep = idx.filter(i => Math.abs(xi[i]) >= lam);
+    if (keep.length === idx.length) break;
+    idx = keep;
+  }
+  return xi.map(c => Math.abs(c) < lam ? 0 : c);
+}
+function experiment(lam, noisePct, c) {
+  const truth = rk4(y => [y[1], -K*y[0] - c*y[1]], [1, 0]);
+  const s = noisePct/100;
+  const xm = truth.map((y, i) => y[0] + s*G[i]), vm = truth.map((y, i) => y[1] + 2*s*G[N+i]);
+  let den = 0; for (let k = -M; k <= M; k++) den += k*k;
+  const dif = a => { const d = []; for (let i = M; i < N-M; i++) { let t = 0; for (let k = -M; k <= M; k++) t += k*a[i+k]; d.push(t/(den*DT)); } return d; };
+  const dx = dif(xm), dv = dif(vm);
+  const Th = []; for (let i = M; i < N-M; i++) Th.push(lib(xm[i], vm[i]));
+  const xi1 = stlsq(Th, dx, lam), xi2 = stlsq(Th, dv, lam);
+  const model = rk4(y => { const L = lib(y[0], y[1]); let a = 0, b = 0; for (let j = 0; j < L.length; j++) { a += xi1[j]*L[j]; b += xi2[j]*L[j]; } return [a, b]; }, [1, 0]);
+  const true1 = new Array(10).fill(0); true1[2] = 1;
+  const true2 = new Array(10).fill(0); true2[1] = -K; true2[2] = -c;
+  return { truth, xm, model, xi: [xi1, xi2], tr: [true1, true2] };
+}
+// (CORE-END)
+
+// ---------- interfaz
+const $ = id => document.getElementById(id);
+const st = { lam: 0.1, noise: 1, c: 0.4 };
+let R = null;
+const fmt = (v, d = 2) => (Math.abs(v) < 0.005 ? 0 : v).toFixed(d);
+function renderEq() {
+  const lhs = ['ẋ =', 'v̇ ='];
+  let bad = 0, miss = 0;
+  $('eqs').innerHTML = [0, 1].map(e => {
+    const xi = R.xi[e], tr = R.tr[e], parts = [];
+    xi.forEach((c, j) => {
+      if (c !== 0) { const ok = tr[j] !== 0; if (!ok) bad++; parts.push(`<span class="chip${ok ? '' : ' bad'}">${c < 0 ? '−' : '+'} ${fmt(Math.abs(c))}${NAMES[j] === '1' ? '' : ' ' + NAMES[j]}</span>`); }
+      else if (tr[j] !== 0) { miss++; parts.push(`<span class="chip miss">${tr[j] < 0 ? '−' : '+'} ${fmt(Math.abs(tr[j]))} ${NAMES[j]}</span>`); }
+    });
+    return `<div class="eq"><span class="lhs">${lhs[e]}</span>${parts.length ? parts.join('') : '<span class="zero">0</span>'}</div>`;
+  }).join('');
+  const s = $('status');
+  if (!bad && !miss) { s.className = 'status ok'; s.textContent = 'Se identificó el sistema correcto.'; }
+  else if (miss && !bad) { s.className = 'status bad'; s.textContent = `Umbral demasiado alto: se ${miss === 1 ? 'eliminó un término presente' : 'eliminaron ' + miss + ' términos presentes'} en el sistema.`; }
+  else if (bad && !miss) { s.className = 'status bad'; s.textContent = `${bad === 1 ? 'Aparece un término espurio' : 'Aparecen ' + bad + ' términos espurios'}: conviene aumentar el umbral o reducir el ruido.`; }
+  else { s.className = 'status bad'; s.textContent = `${bad} términos espurios y ${miss} términos del sistema eliminados.`; }
+}
+const svg = $('plot');
+let W = 0, H = 0, geo = null;
+function draw() {
+  W = svg.clientWidth; H = svg.clientHeight; if (!W || !H) return;
+  const narrow = W < 520, springW = narrow ? 64 : 96, padL = springW + (narrow ? 34 : 44), padR = 16, padT = 20, padB = 34;
+  const T = (N-1)*DT, X = t => padL + t/T*(W-padL-padR), Y = x => padT + (1.25 - x)/2.5*(H-padT-padB);
+  geo = { X, Y, springW, padT };
+  const path = arr => { let d = '', pen = false; arr.forEach((y, i) => { const v = y[0]; if (!isFinite(v) || Math.abs(v) > 1.25) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i*DT).toFixed(1) + ' ' + Y(v).toFixed(1); pen = true; }); return d; };
+  const ticks = narrow ? [0, 5, 10, 15] : [0, 3, 6, 9, 12, 15];
+  let g = '';
+  [-1, 0, 1].forEach(v => { g += `<line x1="${padL}" x2="${W-padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${padL-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`; });
+  ticks.forEach(t => { g += `<text x="${X(t)}" y="${H-10}" text-anchor="middle">${t} s</text>`; });
+  let dots = ''; for (let i = 0; i < N; i += 3) { const v = R.xm[i]; if (Math.abs(v) <= 1.25) dots += `<circle cx="${X(i*DT).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="2" fill="var(--dot)"/>`; }
+  svg.innerHTML = `${g}${dots}<path d="${path(R.model)}" fill="none" stroke="var(--steel)" stroke-width="2.5" stroke-linejoin="round"/>
+  <line x1="${springW/2-26}" x2="${springW/2+26}" y1="${padT-6}" y2="${padT-6}" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+  <path id="spring" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linejoin="round"/>
+  <rect id="mass" width="${narrow ? 34 : 44}" height="${narrow ? 26 : 32}" rx="6" fill="var(--steel)"/>
+  <line id="link" stroke="var(--steel)" stroke-dasharray="3 4" stroke-width="1.5"/>
+  <circle id="head" r="5" fill="var(--steel)" stroke="var(--panel)" stroke-width="2"/>
+  <text x="${springW/2}" y="${H-10}" text-anchor="middle">oscilador</text>`;
+  frame(phase);
+}
+let phase = 0;
+function frame(p) {
+  if (!geo || !R) return;
+  const i = Math.min(N-1, Math.floor(p*(N-1))), x = R.truth[i][0], { X, Y, springW, padT } = geo;
+  const cx = springW/2, yTop = padT-6, yM = Y(x), mw = W < 520 ? 34 : 44, mh = W < 520 ? 26 : 32;
+  let d = `M${cx} ${yTop}`; const coils = 10, len = yM - mh/2 - yTop;
+  for (let k = 1; k <= coils; k++) d += `L${cx + (k % 2 ? 12 : -12)} ${yTop + len*(k-0.5)/coils}`;
+  d += `L${cx} ${yM - mh/2}`;
+  const sp = $('spring'), ms = $('mass'), hd = $('head'), ln = $('link');
+  if (!sp) return;
+  sp.setAttribute('d', d); ms.setAttribute('x', cx - mw/2); ms.setAttribute('y', yM - mh/2);
+  const mv = R.model[i][0], hx = X(i*DT);
+  const ok = isFinite(mv) && Math.abs(mv) <= 1.25;
+  hd.setAttribute('cx', hx); hd.setAttribute('cy', ok ? Y(mv) : -20);
+  ln.setAttribute('x1', cx + mw/2); ln.setAttribute('x2', hx); ln.setAttribute('y1', yM); ln.setAttribute('y2', yM);
+}
+function update() {
+  st.lam = +$('lam').value; st.noise = +$('noise').value; st.c = +$('fric').value;
+  $('lamO').textContent = st.lam.toFixed(2); $('noiseO').textContent = st.noise.toFixed(1) + ' %'; $('fricO').textContent = st.c.toFixed(2);
+  R = experiment(st.lam, st.noise, st.c);
+  renderEq(); draw();
+}
+['lam', 'noise', 'fric'].forEach(id => $(id).addEventListener('input', update));
+document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => {
+  const [l, n, c] = b.dataset.p.split(',').map(Number);
+  $('lam').value = l; $('noise').value = n; $('fric').value = c; update();
+}));
+const ro = new ResizeObserver(draw); ro.observe(svg);
+const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let t0 = null;
+function loop(ts) { if (t0 === null) t0 = ts; phase = ((ts - t0)/9000) % 1; frame(phase); requestAnimationFrame(loop); }
+update();
+if (!still) requestAnimationFrame(loop); else { phase = 0.12; frame(phase); }
+}
+</script>
+</body>
+</html>

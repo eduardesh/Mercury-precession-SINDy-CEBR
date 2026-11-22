@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "Si usas este material, cita la tesis."
+title: "Redescubriendo a Einstein: SINDy y el perihelio de Mercurio"
+authors:
+  - family-names: "Barrón Ramos"
+    given-names: "Cristopher Eduardo"
+    affiliation: "Facultad de Ciencias Físico Matemáticas, Universidad Autónoma de Coahuila"
+license: MIT
+preferred-citation:
+  type: thesis
+  thesis-type: "Tesis de licenciatura en Ingeniería Física"
+  title: "Redescubrimiento de la precesión relativista del perihelio de Mercurio con Machine Learning: identificación dispersa de dinámica no lineal (SINDy)"
+  authors:
+    - family-names: "Barrón Ramos"
+      given-names: "Cristopher Eduardo"
+  institution:
+    name: "Universidad Autónoma de Coahuila"
+  year: 2026

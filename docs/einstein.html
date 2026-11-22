@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El término relativista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.group{margin-top:12px}
+.group small{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+.chip.off{border-color:var(--line);color:var(--muted)}
+.fbig{margin-top:14px}
+@media(min-width:861px){#fig{min-height:520px}}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.warn{background:var(--panel);border-radius:14px;padding:18px;border-left:4px solid var(--sun);max-width:76ch}
+button[disabled]{opacity:.5;cursor:not-allowed}
+input[disabled]{opacity:.4}
+</style>
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html" aria-current="page">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>Identificación del término relativista en los datos de Mercurio</h1>
+<p class="lead">SINDy recibe las aceleraciones heliocéntricas de Mercurio y una biblioteca de 13 términos: la atracción del Sol, la perturbación de cada planeta, el achatamiento solar, la corrección relativista y tres términos espurios. No se le indica cuáles corresponden a la física real.</p>
+
+<div class="main">
+<div>
+<div class="fig" id="fig"><svg id="plot" role="img" aria-label="Error relativo del modelo en función del umbral"></svg></div>
+<div class="legend"><span><i style="background:var(--steel);height:8px;width:8px;border-radius:4px"></i>Incluye el término relativista, sin términos espurios</span><span><i style="background:var(--red);height:8px;width:8px;border-radius:4px"></i>Incluye términos espurios</span><span><i style="background:var(--dot);height:8px;width:8px;border-radius:4px"></i>Sin término relativista</span></div>
+<p class="key">Curva de Pareto: cada punto corresponde a un umbral \(\lambda\). Hacia la derecha \(\lambda\) disminuye y el modelo admite más términos; el eje vertical es el error relativo del ajuste.</p>
+</div>
+
+<div class="side">
+<div class="card" aria-live="polite">
+<h2>Modelo identificado</h2>
+<div class="group"><small>Términos físicos</small><div class="chips" id="real"></div></div>
+<div class="group"><small>Términos espurios</small><div class="chips" id="fake"></div></div>
+<div class="fbig" id="fbig"></div>
+<p class="status" id="status"></p>
+</div>
+<div class="card">
+<div class="ctl"><label for="lam">Umbral relativo \(\lambda\) <output id="lamO"></output></label><input id="lam" type="range" min="0" max="56" step="1" value="41"><small>Se anulan los coeficientes normalizados con \(|\xi_j| < \lambda\,\max_k|\xi_k|\).</small></div>
+<div class="presets"><button id="codo">Criterio del codo</button></div>
+<h3 style="margin-top:18px">Eliminar términos de la biblioteca</h3>
+<div class="toggles">
+<button id="tPl" aria-pressed="true">Perturbaciones planetarias <span>incluidas</span></button>
+<button id="tJ2" aria-pressed="true">Achatamiento solar \(J_2\) <span>incluido</span></button>
+<button id="tRG" aria-pressed="true">Corrección relativista <span>incluida</span></button>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>La biblioteca</h2>
+<div class="prose" style="max-width:none">
+<p>Con \(\mathbf r\) y \(\mathbf v\) la posición y la velocidad heliocéntricas de Mercurio, y \(\mathbf r_p\) la posición heliocéntrica del planeta \(p\), se propone</p>
+$$\ddot{\mathbf r} = -\xi_\odot\,\frac{\mathbf r}{r^3} \;+\; \sum_{p=1}^{7} \xi_p \left( \frac{\mathbf r_p - \mathbf r}{|\mathbf r_p - \mathbf r|^3} - \frac{\mathbf r_p}{r_p^3} \right) \;+\; \xi_{J_2}\,\mathbf a_{J_2} \;+\; f\,\mathbf a_{\mathrm{1PN}} \;+\; \eta_{1}\,\frac{\mathbf r}{r^4} + \eta_{2}\,\mathbf r - \eta_{3}\,\mathbf v ,$$
+<p>donde el término entre paréntesis es la perturbación de marea (atracción directa menos la aceleración del Sol), \(\mathbf a_{J_2}\) es la aceleración debida al achatamiento solar y la corrección relativista a primer orden posnewtoniano es</p>
+$$\mathbf a_{\mathrm{1PN}} = \frac{G M_\odot}{c^2 r^3}\left[\left(\frac{4\,G M_\odot}{r} - v^2\right)\mathbf r + 4\,(\mathbf r\cdot\mathbf v)\,\mathbf v\right].$$
+<p>La relatividad general predice \(f = 1\); la mecánica newtoniana, \(f = 0\). Los tres últimos términos, con coeficientes \(\eta_i\), son espurios: una fuerza \(r^{-3}\), una masa extendida uniforme y un arrastre lineal. Las aceleraciones se obtienen derivando las velocidades con diferencias finitas centradas de orden 10, y las columnas se normalizan antes de aplicar STLSQ.</p>
+</div>
+<div class="main">
+<div>
+<h2>Comparación con JPL</h2>
+<p class="lead" style="margin-bottom:12px">Coeficientes del modelo seleccionado con el criterio del codo, divididos entre los valores de la efeméride DE440.</p>
+<div style="overflow-x:auto"><table id="tabla"><thead><tr><th>Término</th><th>Identificado ÷ JPL</th></tr></thead><tbody></tbody></table></div>
+</div>
+<div class="prose">
+<h2>Selección del umbral</h2>
+<p>Al disminuir \(\lambda\), el error relativo \(E(\lambda)\) desciende por escalones cada vez que entra un término físico y después se estanca. Se elige el mayor umbral cuyo error está dentro de 5 % del mínimo:</p>
+$$\lambda^{*} = \max\{\lambda : E(\lambda) \le 1.05\,E_{\min}\}.$$
+<p>La corrección relativista es del orden de \(8\times 10^{-8}\) de la atracción solar. Aun así, sin ella el error del mejor modelo es unas mil veces mayor, y el criterio la selecciona.</p>
+<div class="warn"><b>Alcance del resultado.</b> Las efemérides de JPL se calculan con relatividad general. El experimento demuestra que SINDy recupera, sin información previa, la estructura de esas ecuaciones; no constituye una medición independiente de la relatividad con observaciones directas.</div>
+</div>
+</div>
+<div class="reto"><b>Ejercicio.</b> Eliminar la corrección relativista de la biblioteca. ¿Qué término espurio selecciona SINDy en su lugar y en qué factor aumenta el error? Repetir eliminando el término \(J_2\).</div>
+<div class="next"><a class="btn" href="mercurio.html">← El perihelio de Mercurio</a><a class="btn" href="rompe.html">Siguiente: sensibilidad al ruido →</a></div>
+</div></section>
+
+<footer class="band"><div class="wrap">Experimento 4 de «Redescubriendo a Einstein». Datos: JPL Horizons (DE441), 1900–2100, cada 12 horas. Método y resultados del capítulo 4 de la tesis.</div></footer>
+
+<script>
+{
+const $ = id => document.getElementById(id);
+let D = null, on = { pl: true, j2: true, rg: true };
+const sup = n => String(n).replace(/-/g, '⁻').replace(/\d/g, c => '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]);
+const fmtLam = l => { const e = Math.floor(Math.log10(l) + 1e-9), m = l/10**e; return e === 0 ? m.toFixed(1) : `${m.toFixed(1)}×10${sup(e)}`; };
+const fmtSci = v => { const e = Math.floor(Math.log10(v)); return `${(v/10**e).toFixed(1)}×10${sup(e)}`; };
+function current() {
+  const key = `${+on.pl}${+on.j2}${+on.rg}`;
+  if (key === '111') { const p = D.pareto[+$('lam').value]; return { act: p.act, err: p.err, f: p.f, lib: [1,1,1,1,1,1,1,1,1,1,1,1,1] }; }
+  const r = D.interruptores[key], act = D.nombres.map(n => r.terminos.some(t => t.termino === n) ? 1 : 0);
+  const f = r.terminos.find(t => t.termino === 'Relatividad');
+  return { act, err: r.error, f: f ? f.coef : null, lib: [1, ...Array(7).fill(+on.pl), +on.j2, +on.rg, 1, 1, 1] };
+}
+function render() {
+  const c = current(), base = D.pareto[D.elegido].err;
+  const chip = j => { const name = D.nombres[j].replace('Falso: ', ''), real = j < 10;
+    if (!c.lib[j]) return `<span class="chip off" style="text-decoration:line-through">${name}</span>`;
+    if (c.act[j]) return `<span class="chip${real ? '' : ' bad'}">${name}</span>`;
+    return real ? `<span class="chip miss">${name}</span>` : `<span class="chip off">${name}</span>`; };
+  $('real').innerHTML = [...Array(10).keys()].map(chip).join('');
+  $('fake').innerHTML = [10, 11, 12].map(chip).join('');
+  $('fbig').innerHTML = c.f ? `<span class="num">f = ${c.f.toFixed(5)}</span><small>relatividad general: f = 1</small>` : `<small>Sin término relativista</small>`;
+  const fakes = [10, 11, 12].filter(j => c.act[j]).map(j => D.nombres[j].replace('Falso: ', '')), miss = [...Array(10).keys()].filter(j => c.lib[j] && !c.act[j]).map(j => D.nombres[j]);
+  const s = $('status'), ratio = c.err/base;
+  if (!on.rg || !on.j2 || !on.pl) {
+    s.className = 'status bad';
+    const quit = !on.pl ? 'las perturbaciones planetarias' : !on.rg ? 'la corrección relativista' : 'el término J2';
+    s.textContent = `Sin ${quit}, ${fakes.length ? 'SINDy compensa con el término espurio «' + fakes.join('», «') + '»' : 'el modelo queda reducido al término solar'} y el error aumenta ${ratio < 1.5 ? 'muy poco' : 'en un factor ' + Math.round(ratio).toLocaleString('es-MX').replace(/,/g, ' ')}.`;
+  } else if (!fakes.length && !miss.length) { s.className = 'status ok'; s.textContent = `Se seleccionan exactamente los 10 términos físicos, sin términos espurios. Error relativo: ${fmtSci(c.err)}.`; }
+  else if (fakes.length) { s.className = 'status bad'; s.textContent = `Umbral demasiado bajo: ${fakes.length === 1 ? 'entra un término espurio' : 'entran ' + fakes.length + ' términos espurios'} sin reducir apreciablemente el error.`; }
+  else { s.className = 'status bad'; s.textContent = `Umbral demasiado alto: faltan ${miss.length} términos físicos (${miss.slice(0, 3).join(', ')}${miss.length > 3 ? '…' : ''}).`; }
+  const dis = !(on.pl && on.j2 && on.rg); $('lam').disabled = dis; $('codo').disabled = dis;
+  $('lamO').textContent = dis ? 'criterio del codo' : fmtLam(D.pareto[+$('lam').value].lam);
+  draw();
+}
+function draw() {
+  const s = $('plot'), W = s.clientWidth, H = s.clientHeight; if (!W || !H || !D) return;
+  const narrow = W < 520, L = narrow ? 50 : 62, R = 16, T = 18, B = 40, P = D.pareto, n = P.length;
+  const X = i => L + i/(n - 1)*(W - L - R), lo = -12, hi = 0, Y = e => T + (hi - Math.log10(e))/(hi - lo)*(H - T - B);
+  let g = '';
+  for (let k = lo; k <= hi; k += 2) g += `<line x1="${L}" x2="${W-R}" y1="${Y(10**k)}" y2="${Y(10**k)}" stroke="var(--line)"/><text x="${L-8}" y="${Y(10**k)+4}" text-anchor="end">10${sup(k)}</text>`;
+  [0, 4, 8, 12, 16].forEach(e => { const i = P.findIndex(p => Math.abs(Math.log10(p.lam) + e) < 0.01); if (i >= 0 && (!narrow || e % 8 === 0)) g += `<text x="${X(i)}" y="${H-22}" text-anchor="middle">10${sup(-e)}</text>`; });
+  g += `<text x="${(L + W - R)/2}" y="${H-6}" text-anchor="middle">umbral (baja hacia la derecha)</text><text x="${L}" y="${T-4}">error relativo</text>`;
+  let d = ''; P.forEach((p, i) => d += (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(Math.max(p.err, 1e-12)).toFixed(1));
+  g += `<path d="${d}" fill="none" stroke="var(--line)" stroke-width="2"/>`;
+  P.forEach((p, i) => { const fake = p.act[10] || p.act[11] || p.act[12], c = fake ? 'var(--red)' : p.act[9] ? 'var(--steel)' : 'var(--dot)'; g += `<circle cx="${X(i).toFixed(1)}" cy="${Y(Math.max(p.err, 1e-12)).toFixed(1)}" r="3.5" fill="${c}"/>`; });
+  const e = D.elegido; g += `<circle cx="${X(e)}" cy="${Y(P[e].err)}" r="9" fill="none" stroke="var(--steel)" stroke-width="2"/><text x="${X(e)}" y="${Y(P[e].err) - 16}" text-anchor="middle" style="fill:var(--ink)">codo</text>`;
+  if (on.pl && on.j2 && on.rg) { const i = +$('lam').value; g += `<line x1="${X(i)}" x2="${X(i)}" y1="${T}" y2="${H-B}" stroke="var(--ink)" stroke-dasharray="3 4"/>`; }
+  s.innerHTML = g;
+}
+function table() {
+  const rows = D.interruptores['111'].terminos.filter(t => t.real && t.termino !== 'J2 del Sol').map(t => {
+    const v = t.termino === 'Relatividad' ? t.coef : t.rel; return `<tr><td>${t.termino === 'Sol' ? 'Sol (GM☉ + GM de Mercurio)' : t.termino === 'Relatividad' ? 'Corrección relativista, f' : t.termino}</td><td>${v.toFixed(t.termino === 'Urano' || t.termino === 'Neptuno' ? 5 : 7)}</td></tr>`; });
+  const j2 = D.interruptores['111'].terminos.find(t => t.termino === 'J2 del Sol');
+  rows.push(`<tr><td>J2 del Sol (valor absoluto)</td><td>${(j2.coef*1e7).toFixed(3)}×10⁻⁷</td></tr>`);
+  document.querySelector('#tabla tbody').innerHTML = rows.join('');
+}
+const tog = (id, k, w) => $(id).addEventListener('click', () => { on[k] = !on[k]; $(id).setAttribute('aria-pressed', on[k]); $(id).querySelector('span').textContent = on[k] ? w : 'eliminado'; render(); });
+tog('tPl', 'pl', 'incluidas'); tog('tJ2', 'j2', 'incluido'); tog('tRG', 'rg', 'incluida');
+$('lam').addEventListener('input', render);
+$('codo').addEventListener('click', () => { $('lam').value = D.elegido; render(); });
+const ro = new ResizeObserver(draw); ro.observe($('plot'));
+fetch('datos_mercurio.json').then(r => r.json()).then(d => { D = d; $('lam').value = D.elegido; table(); render(); })
+  .catch(() => { $('status').textContent = 'No se pudieron cargar los datos.'; });
+}
+</script>
+</body>
+</html>

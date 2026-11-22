@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fundamentos teóricos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+article{max-width:70ch}
+article h2{margin-top:8px}
+.formula{font:500 clamp(18px,2.6vw,22px)/1.4 'Space Grotesk',system-ui,sans-serif;background:var(--panel);border-radius:12px;padding:14px 18px;margin:14px 0;overflow-x:auto;white-space:nowrap}
+.read{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:32px;align-items:start}
+.aside{background:var(--panel);border-radius:14px;padding:18px;font-size:15px}
+.aside p{margin:0 0 8px}
+section.r{border-top:1px solid var(--line)}
+@media(max-width:860px){.read{grid-template-columns:minmax(0,1fr)}}
+@media(min-width:900px){.toc{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:2}}
+</style>
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html" aria-current="page">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>Fundamentos teóricos</h1>
+<p class="lead">Cinco secciones breves con los resultados necesarios para seguir los experimentos: el problema de Kepler, la anomalía de Mercurio, la corrección relativista, el método SINDy y los criterios para evaluar un modelo identificado.</p>
+<div class="toc"><a class="btn" href="#kepler">El problema de Kepler</a><a class="btn" href="#mercurio">La anomalía de Mercurio</a><a class="btn" href="#einstein">La corrección relativista</a><a class="btn" href="#sindy">El método SINDy</a><a class="btn" href="#confiar">Validación del modelo</a></div>
+</div></section>
+
+<section class="band r" id="kepler"><div class="wrap read"><article>
+<h2>1. El problema de Kepler</h2>
+<p>Kepler obtuvo de las observaciones de Tycho Brahe que los planetas describen elipses con el Sol en un foco. Newton (1687) dedujo esas órbitas de una aceleración central inversamente proporcional al cuadrado de la distancia:</p>
+$$\ddot{\mathbf r} = -\frac{G M}{r^{3}}\,\mathbf r .$$
+<p>Con la conservación del momento angular por unidad de masa, \(h = r^{2}\dot\varphi\), y el cambio de variable \(u = 1/r\), la ecuación radial se reduce a la ecuación de Binet:</p>
+$$\frac{d^{2}u}{d\varphi^{2}} + u = \frac{G M}{h^{2}} ,$$
+<p>cuya solución \(u(\varphi) = \dfrac{GM}{h^{2}}\big[1 + e\cos(\varphi - \varpi)\big]\) es una cónica de excentricidad \(e\). Para \(e<1\) la órbita es una elipse cerrada: el perihelio, en \(\varphi = \varpi\), permanece fijo.</p>
+<p><a class="btn" href="newton.html">Experimento 2: ley de gravitación →</a></p>
+</article><div class="aside"><p><b>Idea central.</b> Kepler describió las regularidades; Newton propuso la ley que las explica. SINDy intenta realizar ambos pasos a partir de los datos: proponer una ecuación diferencial compatible con las observaciones.</p></div></div></section>
+
+<section class="band r" id="mercurio"><div class="wrap read"><article>
+<h2>2. La anomalía de Mercurio</h2>
+<p>Las perturbaciones de los demás planetas hacen que la elipse de Mercurio gire lentamente en su plano: el perihelio avanza unos 575″ por siglo respecto a un marco inercial. En 1859 Urbain Le Verrier calculó la contribución planetaria con la mecánica newtoniana y encontró un exceso de unos 40″ por siglo; el valor moderno es de 43″ por siglo.</p>
+<p>Le Verrier atribuyó el exceso a un planeta interior no observado, Vulcano. La búsqueda resultó infructuosa y la discrepancia permaneció sin explicación durante más de cincuenta años.</p>
+<p><a class="btn" href="mercurio.html">Experimento 3: el perihelio de Mercurio →</a></p>
+</article><div class="aside"><p><b>Orden de magnitud.</b> 43″ equivalen a \(2.1\times10^{-4}\) rad: el ángulo que subtiende una moneda de 2 cm a 100 m de distancia, acumulado a lo largo de un siglo.</p></div></div></section>
+
+<section class="band r" id="einstein"><div class="wrap read"><article>
+<h2>3. La corrección relativista</h2>
+<p>En la métrica de Schwarzschild, la ecuación de las geodésicas temporales escrita en la forma de Binet adquiere un término adicional:</p>
+$$\frac{d^{2}u}{d\varphi^{2}} + u = \frac{G M}{h^{2}} + \frac{3 G M}{c^{2}}\,u^{2} .$$
+<p>El cociente entre el término nuevo y el newtoniano es del orden de \(3GM/(c^{2}p)\), con \(p = a(1-e^{2})\); para Mercurio vale aproximadamente \(8\times10^{-8}\). Tratándolo como perturbación, la solución deja de ser periódica en \(2\pi\) y el perihelio avanza en cada órbita</p>
+$$\Delta\varpi = \frac{6\pi\,G M}{c^{2}\,a\,(1-e^{2})} \approx 0.1035'' ,$$
+<p>es decir, 42.98″ por siglo: exactamente el exceso observado.</p>
+<p>En los experimentos se emplea la forma vectorial equivalente a primer orden posnewtoniano, multiplicada por un coeficiente libre \(f\):</p>
+$$\ddot{\mathbf r} = -\frac{GM}{r^{3}}\mathbf r + f\,\frac{GM}{c^{2}r^{3}}\left[\left(\frac{4GM}{r} - v^{2}\right)\mathbf r + 4(\mathbf r\cdot\mathbf v)\,\mathbf v\right].$$
+<p>La relatividad general predice \(f = 1\) y la mecánica newtoniana, \(f = 0\).</p>
+<p><a class="btn" href="einstein.html">Experimento 4: el término relativista →</a></p>
+</article><div class="aside"><p><b>Notación.</b> \(h\) es el momento angular por unidad de masa, \(c\) la velocidad de la luz, \(a\) el semieje mayor y \(e\) la excentricidad. La forma vectorial corresponde al gauge armónico (isotrópico) a orden \(1/c^{2}\).</p></div></div></section>
+
+<section class="band r" id="sindy"><div class="wrap read"><article>
+<h2>4. El método SINDy</h2>
+<p>La identificación dispersa de dinámica no lineal (SINDy; Brunton, Proctor y Kutz, 2016) supone que el campo vectorial de un sistema \(\dot{\mathbf x} = \mathbf F(\mathbf x)\) se escribe con pocos términos de una biblioteca de funciones candidatas. Con \(m\) mediciones del estado se construyen</p>
+$$\dot{\mathbf X} = \begin{bmatrix} \dot{\mathbf x}(t_1)^{\top} \\ \vdots \\ \dot{\mathbf x}(t_m)^{\top} \end{bmatrix},\qquad \Theta(\mathbf X) = \big[\,\theta_1(\mathbf X)\ \ \theta_2(\mathbf X)\ \cdots\ \theta_p(\mathbf X)\,\big],$$
+<p>y se busca una matriz de coeficientes \(\Xi\) con la mayoría de sus entradas nulas tal que \(\dot{\mathbf X} \approx \Theta(\mathbf X)\,\Xi\).</p>
+<p>El algoritmo de mínimos cuadrados con umbral secuencial (STLSQ) alterna dos pasos hasta que el conjunto activo \(S\) se estabiliza:</p>
+$$\Xi_S \leftarrow \arg\min_{\Xi_S}\ \big\lVert \dot{\mathbf X} - \Theta_S(\mathbf X)\,\Xi_S \big\rVert_2^{2},\qquad S \leftarrow \{\, j : |\xi_j| \ge \lambda \,\}.$$
+<p>El umbral \(\lambda\) controla el compromiso entre precisión y simplicidad del modelo.</p>
+<p><a class="btn" href="resorte.html">Experimento 1: oscilador amortiguado →</a></p>
+</article><div class="aside"><p><b>Dispersión.</b> La hipótesis de que pocos términos bastan es la que hace interpretable el resultado: una ecuación con pocos términos puede leerse, compararse con la teoría y someterse a prueba.</p></div></div></section>
+
+<section class="band r" id="confiar"><div class="wrap read"><article>
+<h2>5. Validación del modelo identificado</h2>
+<p>STLSQ siempre devuelve un modelo; la cuestión es si corresponde a la dinámica verdadera. En este proyecto se emplean tres criterios:</p>
+<ul>
+<li><b>Criterio del codo.</b> El error relativo \(E(\lambda)\) desciende por escalones al disminuir \(\lambda\) y después se estanca. Se elige \(\lambda^{*} = \max\{\lambda : E(\lambda)\le 1.05\,E_{\min}\}\), fijado antes de ver el resultado.</li>
+<li><b>Términos espurios de control.</b> La biblioteca incluye términos que se sabe ausentes. Su selección indica sobreajuste o un problema en los datos.</li>
+<li><b>Calidad de las derivadas.</b> SINDy clásico estima \(\dot{\mathbf X}\) numéricamente; el error de esa estimación, que crece con el ruido como \(\sigma/h^{2}\) y con el intervalo de muestreo por truncamiento, limita los términos que pueden identificarse.</li>
+</ul>
+<p>Una precisión importante: las efemérides de JPL se integran con relatividad general. Con ellas, SINDy demuestra que puede recuperar la estructura de las ecuaciones sin información previa, no que mida la relatividad a partir de observaciones directas.</p>
+<p><a class="btn" href="rompe.html">Experimento 5: sensibilidad al ruido →</a></p>
+</article><div class="aside"><p><b>En síntesis.</b> Un modelo identificado vale tanto como las pruebas que supera: estabilidad frente al umbral, ausencia de términos espurios y robustez frente a la calidad de los datos.</p></div></div></section>
+
+<footer class="band"><div class="wrap">Parte de «Redescubriendo a Einstein», basado en una tesis de licenciatura en Ingeniería Física (FCFM, Universidad Autónoma de Coahuila).</div></footer>
+</body>
+</html>

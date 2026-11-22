@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ley de gravitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html" aria-current="page">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>Identificación de la ley de gravitación</h1>
+<p class="lead">Se simula la órbita de un planeta durante cinco periodos. La biblioteca contiene tres leyes de fuerza central y SINDy debe seleccionar la que reproduce las aceleraciones observadas.</p>
+
+<div class="main">
+<div>
+<div class="fig" id="fig"><svg id="plot" role="img" aria-label="Órbita medida y órbita predicha por la ley identificada"></svg></div>
+<div class="legend"><span><i style="background:var(--dot);height:6px;width:6px;border-radius:3px"></i>Posiciones medidas</span><span><i style="background:var(--steel)"></i>Órbita predicha por la ley identificada</span><span><i style="background:var(--sun);height:10px;width:10px;border-radius:5px"></i>Estrella</span></div>
+</div>
+
+<div class="side">
+<div class="card" aria-live="polite">
+<h2>Ley identificada</h2>
+<div class="eqs"><div class="eq" id="eq"></div></div>
+<p class="status" id="status"></p>
+<p class="key">Aceleración dirigida hacia la estrella. Azul: término presente en la ley verdadera · rojo: término espurio.</p>
+</div>
+
+<div class="card">
+<div class="ctl"><label for="lam">Umbral \(\lambda\) <output id="lamO"></output></label><input id="lam" type="range" min="0" max="0.5" step="0.01" value="0.05"><small>Se anulan los coeficientes con \(|\xi_n| < \lambda\).</small></div>
+<div class="ctl"><label for="noise">Ruido en las posiciones <output id="noiseO"></output></label><input id="noise" type="range" min="0" max="1" step="0.01" value="0.1"><small>Desviación estándar, relativa al semieje mayor.</small></div>
+<div class="ctl"><label for="ecc">Excentricidad \(e\) <output id="eccO"></output></label><input id="ecc" type="range" min="0.3" max="0.7" step="0.05" value="0.5"><small>Una órbita más excéntrica recorre un intervalo mayor de \(r\).</small></div>
+<div class="ctl"><label for="pow">Exponente de la ley verdadera \(p\) <output id="powO"></output></label><input id="pow" type="range" min="1.8" max="2.2" step="0.05" value="2"><small>Aceleración \(\propto r^{-p}\); la gravitación newtoniana corresponde a \(p = 2\).</small></div>
+<div class="presets">
+<button data-p="0.05,0.1,0.5,2">Gravitación newtoniana</button>
+<button data-p="0.05,0.5,0.5,2">Ruido elevado</button>
+<button data-p="0.05,0,0.5,2.2">Ley fuera de la biblioteca</button>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>Planteamiento</h2>
+<div class="main" style="margin-top:0">
+<div class="prose">
+<p>Las aceleraciones se obtienen de las posiciones medidas mediante la segunda derivada de un ajuste local cuadrático (filtro de Savitzky–Golay de 17 puntos). Se propone una aceleración central de la forma</p>
+$$\ddot{\mathbf r} = -\sum_{n=1}^{3} \xi_n \,\frac{\hat{\mathbf r}}{r^{\,n}},$$
+<p>de modo que la gravitación newtoniana corresponde a \(\xi_2 = GM\) y \(\xi_1 = \xi_3 = 0\). En las unidades de esta página, \(GM = 1\) y el semieje mayor vale \(1\), por lo que el periodo es \(2\pi\).</p>
+<p>Cada instante aporta dos ecuaciones (componentes \(x\) e \(y\)) y el sistema sobredeterminado se resuelve con STLSQ, como en el experimento anterior.</p>
+</div>
+<div class="prose">
+<p><b>Por qué el ruido afecta tanto.</b> Sobre una sola órbita, las funciones \(r^{-1}, r^{-2}, r^{-3}\) están fuertemente correlacionadas, porque \(r\) sólo varía entre \(a(1-e)\) y \(a(1+e)\). Además, la segunda derivada amplifica el ruido como \(\sigma/\Delta t^2\). Con un error de medición de unas décimas de por ciento la regresión ya no distingue entre las tres columnas.</p>
+<div class="reto" style="margin-top:12px"><b>Ejercicio.</b> Fijar \(p = 2.2\). La biblioteca no contiene \(r^{-2.2}\): ¿qué combinación de términos usa SINDy para aproximarlo? El resultado ilustra una limitación fundamental del método: sólo puede identificar dinámicas que la biblioteca es capaz de representar.</div>
+</div>
+</div>
+<div class="next"><a class="btn" href="resorte.html">← Oscilador amortiguado</a><a class="btn" href="mercurio.html">Siguiente: el perihelio de Mercurio →</a></div>
+</div></section>
+
+<footer class="band"><div class="wrap">Experimento 2 de «Redescubriendo a Einstein». Datos simulados con la ley \(\ddot{\mathbf r} = -GM\,\hat{\mathbf r}/r^{p}\), \(GM = 1\), semieje mayor \(1\), paso \(\Delta t = 0.005\).</div></footer>
+
+<script>
+{
+const DT = 0.005, NSTEP = Math.round(5*2*Math.PI/DT), M = 8, EXP = [1, 2, 3], NAMES = ['1/r', '1/r²', '1/r³'];
+function orbit(acc, e) {
+  const rp = 1 - e; let s = [rp, 0, 0, Math.sqrt((1 + e)/rp)];
+  const f = s => { const a = acc(s[0], s[1]); return [s[2], s[3], a[0], a[1]]; };
+  const out = [s.slice()];
+  for (let i = 1; i < NSTEP; i++) {
+    const k1 = f(s), k2 = f(s.map((v, j) => v + DT/2*k1[j])), k3 = f(s.map((v, j) => v + DT/2*k2[j])), k4 = f(s.map((v, j) => v + DT*k3[j]));
+    s = s.map((v, j) => v + DT/6*(k1[j] + 2*k2[j] + 2*k3[j] + k4[j]));
+    if (!isFinite(s[0]) || Math.hypot(s[0], s[1]) > 20 || Math.hypot(s[0], s[1]) < 0.02) { while (out.length < NSTEP) out.push([NaN, NaN]); break; }
+    out.push(s.slice());
+  }
+  return out;
+}
+function gauss(n) { let s = 4242; const r = () => (s = s * 16807 % 2147483647) / 2147483647; const g = []; for (let i = 0; i < n; i++) { const u = r() || 1e-12, w = r(); g.push(Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*w)); } return g; }
+const G = gauss(2*NSTEP);
+function solve(A, b) { const n = b.length, a = A.map((r, i) => [...r, b[i]]); for (let c = 0; c < n; c++) { let p = c; for (let r = c+1; r < n; r++) if (Math.abs(a[r][c]) > Math.abs(a[p][c])) p = r; [a[c], a[p]] = [a[p], a[c]]; const d = a[c][c] || 1e-14; for (let r = 0; r < n; r++) if (r !== c) { const f = a[r][c]/d; for (let k = c; k <= n; k++) a[r][k] -= f*a[c][k]; } } return a.map((r, i) => r[n]/(r[i] || 1e-14)); }
+function sg2(m) { let s2 = 0, s4 = 0; const n = 2*m + 1; for (let k = -m; k <= m; k++) { s2 += k*k; s4 += k**4; } const den = n*s4 - s2*s2, w = []; for (let k = -m; k <= m; k++) w.push(2*(n*k*k - s2)/den); return w; }
+const W2 = sg2(M);
+function experiment(lam, noisePct, e, pow) {
+  const tr = orbit((x, y) => { const r = Math.hypot(x, y); return [-x/Math.pow(r, pow + 1), -y/Math.pow(r, pow + 1)]; }, e), s = noisePct/100;
+  const xm = tr.map((q, i) => q[0] + s*G[i]), ym = tr.map((q, i) => q[1] + s*G[NSTEP + i]);
+  const rows = [], b = [];
+  for (let i = M; i < NSTEP - M; i++) {
+    let ax = 0, ay = 0; for (let k = -M; k <= M; k++) { ax += W2[k+M]*xm[i+k]; ay += W2[k+M]*ym[i+k]; }
+    const x = xm[i], y = ym[i], r = Math.hypot(x, y);
+    rows.push(EXP.map(n => -x/Math.pow(r, n + 1))); b.push(ax/(DT*DT));
+    rows.push(EXP.map(n => -y/Math.pow(r, n + 1))); b.push(ay/(DT*DT));
+  }
+  let act = EXP.map(() => true), xi = EXP.map(() => 0);
+  for (let it = 0; it < 12; it++) {
+    const idx = EXP.map((_, j) => j).filter(j => act[j]);
+    const A = idx.map(i => idx.map(j => { let t = 0; for (const r of rows) t += r[i]*r[j]; return t; }));
+    const bb = idx.map(i => { let t = 0; for (let k = 0; k < rows.length; k++) t += rows[k][i]*b[k]; return t; });
+    const c = idx.length ? solve(A, bb) : []; xi = EXP.map(() => 0); idx.forEach((j, k) => xi[j] = c[k]);
+    const nact = act.map((a, j) => a && Math.abs(xi[j]) >= lam);
+    if (nact.every((v, j) => v === act[j])) break; act = nact;
+  }
+  xi = xi.map(c => Math.abs(c) < lam ? 0 : c);
+  const model = orbit((x, y) => { const r = Math.hypot(x, y); let f = 0; EXP.forEach((n, j) => f += xi[j]/Math.pow(r, n)); return [-f*x/r, -f*y/r]; }, e);
+  return { tr, xm, ym, xi, model };
+}
+const $ = id => document.getElementById(id);
+let R = null, st = {};
+function renderEq() {
+  const xi = R.xi, truthIdx = st.pow === 2 ? 1 : -1;
+  let first = true; const parts = xi.map((c, j) => { if (!c) return ''; const sg = c < 0 ? '− ' : (first ? '' : '+ '); first = false; return `<span class="chip${j === truthIdx ? '' : ' bad'}">${sg}${Math.abs(c).toFixed(3)} · ${NAMES[j]}</span>`; }).filter(Boolean);
+  if (truthIdx === 1 && !xi[1]) parts.push(`<span class="chip miss">1.000 · 1/r²</span>`);
+  $('eq').innerHTML = `<span class="lhs" style="width:auto">|r̈| =</span>${parts.length ? parts.join('') : '<span class="zero">0</span>'}`;
+  const s = $('status'), bad = xi.filter((c, j) => c && j !== truthIdx).length;
+  if (st.pow !== 2) { s.className = 'status bad'; s.textContent = `La ley verdadera, r^−${st.pow.toFixed(2)}, no pertenece a la biblioteca: SINDy la aproxima con una combinación de ${xi.filter(Boolean).length} términos.`; }
+  else if (!bad && xi[1]) { s.className = 'status ok'; s.textContent = `Se identificó la ley de gravitación de Newton, con GM = ${xi[1].toFixed(3)} (valor verdadero: 1).`; }
+  else if (!xi.some(Boolean)) { s.className = 'status bad'; s.textContent = 'El umbral anuló todos los coeficientes; conviene reducirlo.'; }
+  else { s.className = 'status bad'; s.textContent = `${bad === 1 ? 'Aparece un término espurio' : 'Aparecen ' + bad + ' términos espurios'}: el ruido amplificado por la derivada ya no permite separar las columnas.`; }
+}
+const svg = $('plot');
+let geo = null;
+function draw() {
+  const W = svg.clientWidth, H = svg.clientHeight; if (!W || !H || !R) return;
+  const e = st.e, xmin = -(1 + e) - 0.15, xmax = 1 - e + 0.15, ymax = Math.sqrt(1 - e*e) + 0.15;
+  const sc = Math.min((W - 32)/(xmax - xmin), (H - 32)/(2*ymax)), cx = W/2 - sc*(xmin + xmax)/2, cy = H/2;
+  const X = x => cx + sc*x, Y = y => cy - sc*y; geo = { X, Y };
+  let dots = ''; for (let i = 0; i < NSTEP; i += 9) dots += `<circle cx="${X(R.xm[i]).toFixed(1)}" cy="${Y(R.ym[i]).toFixed(1)}" r="1.8" fill="var(--dot)" opacity=".8"/>`;
+  let d = '', pen = false; R.model.forEach(q => { if (!isFinite(q[0]) || Math.abs(q[0]) > 3 || Math.abs(q[1]) > 3) { pen = false; return; } d += (pen ? 'L' : 'M') + X(q[0]).toFixed(1) + ' ' + Y(q[1]).toFixed(1); pen = true; });
+  svg.innerHTML = `<path d="${d}" fill="none" stroke="var(--steel)" stroke-width="1.6" opacity=".85"/>${dots}<circle cx="${X(0)}" cy="${Y(0)}" r="9" fill="var(--sun)"/><circle id="pl" r="6" fill="var(--steel)" stroke="var(--panel)" stroke-width="2"/>`;
+  frame(phase);
+}
+let phase = 0;
+function frame(p) { const pl = $('pl'); if (!pl || !geo) return; const q = R.tr[Math.floor(p*(NSTEP - 1))]; if (!q || !isFinite(q[0])) return; pl.setAttribute('cx', geo.X(q[0])); pl.setAttribute('cy', geo.Y(q[1])); }
+function update() {
+  st = { lam: +$('lam').value, noise: +$('noise').value, e: +$('ecc').value, pow: Math.round(+$('pow').value*100)/100 };
+  $('lamO').textContent = st.lam.toFixed(2); $('noiseO').textContent = st.noise.toFixed(2) + ' %'; $('eccO').textContent = st.e.toFixed(2); $('powO').textContent = st.pow.toFixed(2);
+  R = experiment(st.lam, st.noise, st.e, st.pow); renderEq(); draw();
+}
+['lam', 'noise', 'ecc', 'pow'].forEach(id => $(id).addEventListener('input', update));
+document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => { const v = b.dataset.p.split(',').map(Number); ['lam', 'noise', 'ecc', 'pow'].forEach((id, k) => $(id).value = v[k]); update(); }));
+const ro = new ResizeObserver(draw); ro.observe(svg);
+update();
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) { let t0 = null; const loop = ts => { if (t0 === null) t0 = ts; phase = ((ts - t0)/20000) % 1; frame(phase); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+}
+</script>
+</body>
+</html>

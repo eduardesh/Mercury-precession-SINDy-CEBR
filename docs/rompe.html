@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensibilidad al ruido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<link rel="stylesheet" href="estilo.css">
+<style>
+.grid{display:grid;grid-template-columns:auto repeat(5,minmax(0,1fr));gap:4px;align-items:stretch}
+.grid .h{font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px 2px}
+.grid .rh{justify-content:flex-end;padding-right:8px;white-space:nowrap}
+.cell{min-height:40px;border-radius:8px;border:2px solid transparent;cursor:pointer;font:600 13px Inter,system-ui,sans-serif;color:var(--ink);padding:0;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.c0{background:var(--steel);color:var(--accent-ink)}
+.c1{background:color-mix(in srgb,var(--steel) 40%,var(--bg))}
+.c2{background:color-mix(in srgb,var(--sun) 55%,var(--bg))}
+.c3{background:color-mix(in srgb,var(--muted) 14%,var(--bg));color:var(--muted)}
+.cell[aria-pressed=true]{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg) inset}
+.axis{font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
+.keyrow{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:var(--muted);margin-top:12px}
+.keyrow i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px}
+.box{background:var(--panel);border-radius:14px;padding:16px}
+@media(max-width:600px){.cell{min-height:36px;font-size:12px}.grid .h{font-size:12px}}
+</style>
+</head>
+<body>
+<nav class="top"><a class="home" href="index.html">Redescubriendo a Einstein</a><a href="teoria.html">Teoría</a><a href="resorte.html">1 · Oscilador</a><a href="newton.html">2 · Gravitación</a><a href="mercurio.html">3 · Mercurio</a><a href="einstein.html">4 · Relatividad</a><a href="rompe.html" aria-current="page">5 · Sensibilidad</a></nav>
+<section class="band"><div class="wrap">
+<h1>SINDy clásico exige precisión métrica y muestreo diario</h1>
+<p class="lead">A los datos reales de Mercurio se les agrega ruido gaussiano en las posiciones y se submuestrean con cadencias cada vez mayores. Para cada combinación se repite la identificación completa con el criterio del codo.</p>
+
+<div class="main">
+<div class="box">
+<div class="grid" id="grid" role="group" aria-label="Resultado para cada combinación de ruido y cadencia"></div>
+<p class="axis">Intervalo de muestreo \(h\) →</p>
+<div class="keyrow"><span><i class="c0"></i>Los 10 términos físicos, sin espurios</span><span><i class="c1"></i>Identifica la relatividad; pierde términos menores</span><span><i class="c2"></i>Identifica \(f\) con sesgo o con términos espurios</span><span><i class="c3"></i>No identifica la relatividad</span></div>
+<p class="key">Cada casilla muestra el valor identificado de \(f\) (relatividad general: \(f = 1\)). Al seleccionar una casilla se muestra el detalle.</p>
+</div>
+<div class="side">
+<div class="card" aria-live="polite">
+<h2 id="dT"></h2>
+<div class="fbig" id="dF" style="margin:6px 0 10px"></div>
+<p class="status" id="dS" style="margin-top:0"></p>
+<p id="dL" class="key" style="font-size:14px"></p>
+</div>
+<div class="card">
+<div class="ctl"><label for="nz">Ruido en las posiciones \(\sigma\) <output id="nzO"></output></label><input id="nz" type="range" min="0" max="8" step="1" value="3"></div>
+<div class="ctl"><label for="cd">Intervalo de muestreo \(h\) <output id="cdO"></output></label><input id="cd" type="range" min="0" max="4" step="1" value="0"></div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="band" style="background:var(--panel)"><div class="wrap">
+<h2>Dos límites del método</h2>
+<div class="main" style="margin-top:0">
+<div class="prose">
+<p><b>Amplificación del ruido.</b> SINDy clásico requiere aceleraciones, que aquí se obtienen como segunda derivada de las posiciones con diferencias finitas centradas de orden 10. Un error \(\sigma\) en las posiciones produce en la aceleración un error del orden de</p>
+$$\delta\ddot r \sim C\,\frac{\sigma}{h^{2}},$$
+<p>con \(C\) una constante que depende de los pesos del esquema. En términos relativos, \(\delta\ddot r/\ddot r \sim \sigma/\big(a\,(\omega h)^2\big)\), con \(\omega = 2\pi/P\). Para Mercurio, \(a \approx 5.8\times10^{10}\) m, de modo que un error de 1 m equivale a \(\sigma/a \approx 1.7\times10^{-11}\); la corrección relativista es apenas \(8\times10^{-8}\) de la aceleración, y los términos más pequeños de la biblioteca son aún menores.</p>
+</div>
+<div class="prose">
+<p><b>Error de truncamiento.</b> Al aumentar \(h\) disminuye la amplificación del ruido, pero crece el error del esquema de diferencias finitas, que escala como \(h^{10}\) multiplicado por derivadas de orden alto de la trayectoria. Con \(h = 2\) días el término relativista resulta sesgado (\(f \approx 1.37\)) y aparecen términos espurios; desde \(h = 4\) días no se identifica.</p>
+<p><b>Orden de pérdida.</b> Los términos se eliminan de menor a mayor magnitud: primero \(J_2\), Urano y Neptuno; después Marte y Saturno; finalmente la corrección relativista.</p>
+</div>
+</div>
+<div class="reto"><b>Observación.</b> Pocos sistemas reales se observan con esta precisión y frecuencia. Para datos menos precisos o más espaciados se requiere una formulación que no dependa de derivar numéricamente las observaciones; ese es el siguiente paso de esta línea de investigación.</div>
+<div class="next"><a class="btn" href="einstein.html">← El término relativista</a><a class="btn" href="index.html">Volver al inicio</a></div>
+</div></section>
+
+<footer class="band"><div class="wrap">Experimento 5 de «Redescubriendo a Einstein». Datos: JPL Horizons (DE441), 1900–2100. Ruido gaussiano en las posiciones (una realización por casilla); aceleraciones por diferencias finitas de orden 10; umbral elegido con el criterio del codo.</div></footer>
+
+<script>
+{
+const $ = id => document.getElementById(id);
+const NZ = [0, 0.1, 0.3, 1, 3, 10, 30, 100, 1000], NZL = ['sin ruido', '10 cm', '30 cm', '1 m', '3 m', '10 m', '30 m', '100 m', '1 km'];
+const CD = [0.5, 1, 2, 4, 8], CDL = ['12 h', '1 día', '2 días', '4 días', '8 días'];
+let R = null;
+const cell = (i, j) => R.find(r => r.ruido_m === NZ[i] && r.dias === CD[j]);
+function cat(r) { if (!r.rg) return 3; if (r.falsos.length || Math.abs(r.f - 1) > 0.05) return 2; return r.perdidos.length ? 1 : 0; }
+function build() {
+  let h = '<span></span>' + CDL.map(l => `<span class="h">${l}</span>`).join('');
+  NZ.forEach((_, i) => {
+    h += `<span class="h rh">${NZL[i]}</span>`;
+    CD.forEach((_, j) => { const r = cell(i, j); h += `<button class="cell c${cat(r)}" data-i="${i}" data-j="${j}" aria-pressed="false" aria-label="${NZL[i]}, cada ${CDL[j]}">${r.rg ? r.f.toFixed(2) : '—'}</button>`; });
+  });
+  $('grid').innerHTML = h;
+  $('grid').querySelectorAll('.cell').forEach(b => b.addEventListener('click', () => { $('nz').value = b.dataset.i; $('cd').value = b.dataset.j; sel(); }));
+}
+function sel() {
+  const i = +$('nz').value, j = +$('cd').value, r = cell(i, j), c = cat(r);
+  $('nzO').textContent = NZL[i]; $('cdO').textContent = CDL[j];
+  $('grid').querySelectorAll('.cell').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === i && +b.dataset.j === j));
+  $('dT').textContent = `${NZL[i] === 'sin ruido' ? 'Sin ruido' : 'σ = ' + NZL[i]}, h = ${CDL[j]}`;
+  $('dF').innerHTML = r.rg ? `<span class="num">f = ${r.f.toFixed(r.f > 0.999 && r.f < 1.001 ? 5 : 3)}</span>` : '<span class="num" style="color:var(--muted)">sin relatividad</span>';
+  const s = $('dS');
+  s.className = 'status ' + (c <= 1 ? 'ok' : 'bad');
+  s.textContent = ['Se identifican los 10 términos físicos, sin términos espurios.', 'Se identifica la corrección relativista, aunque se pierden los términos de menor magnitud.', r.falsos.length ? `Se identifica un término relativista, pero ${r.falsos.length === 1 ? 'aparece un término espurio' : 'aparecen ' + r.falsos.length + ' términos espurios'} y f se aleja de 1.` : 'Se identifica un término relativista con un valor de f sesgado.', 'La corrección relativista no se identifica.'][c];
+  const lost = r.perdidos.map(n => n === 'J2 del Sol' ? 'achatamiento del Sol' : n), fk = r.falsos.map(n => n.replace('Falso: ', ''));
+  $('dL').textContent = (lost.length ? `Términos físicos eliminados: ${lost.join(', ')}.` : 'No se elimina ningún término físico.') + (fk.length ? ` Términos espurios seleccionados: ${fk.join(', ')}.` : '');
+}
+['nz', 'cd'].forEach(id => $(id).addEventListener('input', sel));
+fetch('datos_mercurio.json').then(r => r.json()).then(d => { R = d.rompe; build(); sel(); })
+  .catch(() => { $('dT').textContent = 'No se pudieron cargar los datos.'; });
+}
+</script>
+</body>
+</html>
