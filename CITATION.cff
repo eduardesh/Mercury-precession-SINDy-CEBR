@@ -5,6 +5,9 @@ authors:
   - family-names: "Barrón Ramos"
     given-names: "Cristopher Eduardo"
     affiliation: "Facultad de Ciencias Físico Matemáticas, Universidad Autónoma de Coahuila"
+  - family-names: "Burgos-García"
+    given-names: "Jaime"
+    affiliation: "Facultad de Ciencias Físico Matemáticas, Universidad Autónoma de Coahuila"
 license: MIT
 preferred-citation:
   type: thesis

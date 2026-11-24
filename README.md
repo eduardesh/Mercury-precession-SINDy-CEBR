@@ -24,6 +24,8 @@ Los cálculos se ejecutan en el navegador, sin instalación ni registro.
 
 Basado en la tesis de licenciatura en Ingeniería Física de **Cristopher Eduardo Barrón Ramos** (Facultad de Ciencias Físico Matemáticas, Universidad Autónoma de Coahuila): *Redescubrimiento de la precesión relativista del perihelio de Mercurio con Machine Learning: identificación dispersa de dinámica no lineal (SINDy)*.
 
+Trabajo en conjunto, realizado bajo la supervisión del director de tesis, **Dr. Jaime Burgos-García**.
+
 Datos: [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) (efemérides DE441), 1900–2100, cada 12 horas.
 
 ## Contenido del repositorio
